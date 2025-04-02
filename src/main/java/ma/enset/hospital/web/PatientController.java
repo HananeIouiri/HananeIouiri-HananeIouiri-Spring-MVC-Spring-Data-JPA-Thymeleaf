@@ -13,15 +13,19 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
-@Controller
-@AllArgsConstructor
-public class PatientController {
-    private PatientRepository patientRepository;
+    @Controller
+    @AllArgsConstructor
+    public class PatientController {
+        private PatientRepository patientRepository;
 
-    @GetMapping("/index")
-    public String index(Model model) {
-        List<Patient> patientsList = patientRepository.findAll();
-        model.addAttribute("patients", patientsList);
-        return "patients";
+        @GetMapping("/index")
+        public String index(Model model,
+                            @RequestParam(name = "page", defaultValue = "0") int page,
+                            @RequestParam(name = "size", defaultValue = "5") int size) {
+            Page<Patient> pagePatients = patientRepository.findAll(PageRequest.of(page, size));
+            model.addAttribute("patients", pagePatients.getContent());
+            model.addAttribute("pages", new int[pagePatients.getTotalPages()]);
+            model.addAttribute("currentPage", page);
+            return "patients";
+        }
     }
-}
