@@ -53,5 +53,14 @@ import java.util.List;
             patientRepository.save(patient);
             return "redirect:/index?page="+page+"&keyword="+keyword;
         }
+        @GetMapping("/editPatient")
+        public String editPatient(Model model, Long id, int page, String keyword) {
+            Patient patient = patientRepository.findById(id).orElse(null);
+            if (patient == null) throw new RuntimeException("Patient introuvable.");
+            model.addAttribute("patient", patient);
+            model.addAttribute("page", page);
+            model.addAttribute("keyword", keyword);
+            return "editPatient";
+        }
 
     }

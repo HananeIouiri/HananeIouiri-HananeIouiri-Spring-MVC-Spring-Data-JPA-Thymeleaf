@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="template">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Patient</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/5.0.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/webjars/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        .form-container {
+            margin-top: 50px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+        }
+        .title-container {
+            background-color: #ffc107;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content1" class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 form-container">
+            <div class="title-container">Modifier un patient</div>
+            <form th:action="@{save?page=${page}&keyword=${keyword}}" method="post" class="needs-validation" novalidate>
+
+                <div class="mb-3">
+                    <label class="form-label">ID</label>
+                    <input type="text" name="id" class="form-control" th:value="${patient.id}" readonly>
+                </div>
+
+                <div class="mb-3">
+                    <label for="nom" class="form-label">Nom</label>
+                    <input id="nom" type="text" name="nom" class="form-control" th:value="${patient.nom}" required>
+                    <div class="error-message" th:if="${#fields.hasErrors('patient.nom')}" th:errors="${patient.nom}"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="prenom" class="form-label">Prénom</label>
+                    <input id="prenom" type="text" name="prenom" class="form-control" th:value="${patient.prenom}" required>
+                    <div class="error-message" th:if="${#fields.hasErrors('patient.prenom')}" th:errors="${patient.prenom}"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="dateNaissance" class="form-label">Date de Naissance</label>
+                    <input id="dateNaissance" type="date" name="dateNaissance" class="form-control" th:value="${patient.dateNaissance}" required>
+                    <div class="error-message" th:if="${#fields.hasErrors('patient.dateNaissance')}" th:errors="${patient.dateNaissance}"></div>
+                </div>
+
+                <div class="form-check mb-3">
+                    <input id="malade" type="checkbox" name="malade" class="form-check-input" th:checked="${patient.malade}">
+                    <label class="form-check-label" for="malade">Malade</label>
+                </div>
+
+                <div class="mb-3">
+                    <label for="score" class="form-label">Score</label>
+                    <input id="score" type="number" name="score" class="form-control" th:value="${patient.score}" min="0" required>
+                    <div class="error-message" th:if="${#fields.hasErrors('patient.score')}" th:errors="${patient.score}"></div>
+                </div>
+
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
