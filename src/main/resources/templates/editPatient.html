@@ -37,10 +37,9 @@
             <form th:action="@{save?page=${page}&keyword=${keyword}}" method="post" class="needs-validation" novalidate>
 
                 <div class="mb-3">
-                    <label class="form-label">ID</label>
-                    <input type="text" name="id" class="form-control" th:value="${patient.id}" readonly>
+                    <label class="form-label">Id: <span th:text="${patient.id}"></span></label>
+                    <input class="form-control" type="hidden" name="id" th:value="${patient.id}">
                 </div>
-
                 <div class="mb-3">
                     <label for="nom" class="form-label">Nom</label>
                     <input id="nom" type="text" name="nom" class="form-control" th:value="${patient.nom}" required>
@@ -74,6 +73,7 @@
                     <button type="submit" class="btn btn-primary">Enregistrer</button>
                 </div>
             </form>
+
         </div>
     </div>
 </div>
