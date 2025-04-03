@@ -3,6 +3,7 @@ package ma.enset.hospital.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -26,11 +27,12 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.formLogin();
-        httpSecurity.authorizeHttpRequests().requestMatchers("/user/**").hasRole("USER");
-        httpSecurity.authorizeHttpRequests().requestMatchers("/admin/**").hasRole("ADMIN");
-        httpSecurity.exceptionHandling().accessDeniedPage("/notAuthorized");
-        httpSecurity.authorizeHttpRequests().anyRequest().authenticated();
-        return httpSecurity.build();
+        return httpSecurity
+                .formLogin(Customizer.withDefaults())
+                .authorizeHttpRequests(ar->ar.requestMatchers("/deletePatient/**").hasRole("ADMIN"))
+                .authorizeHttpRequests(ar->ar.requestMatchers("/admin/**").hasRole("ADMIN"))
+                .authorizeHttpRequests(ar->ar.requestMatchers("/user/**").hasRole("USER"))
+                .authorizeHttpRequests(ar->ar.anyRequest().authenticated())
+                .build();
     }
 }

@@ -7,6 +7,7 @@ import ma.enset.hospital.entities.Patient;
 import ma.enset.hospital.repository.PatientRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -39,6 +40,7 @@ import java.util.List;
             return "patients";
         }
         @GetMapping("/admin/delete")
+        @PreAuthorize("hasRole('ROLE_ADMIN')")
         public String delete(@RequestParam(name = "id") Long id,
                              @RequestParam(name = "keyword",defaultValue = "") String keyword,
                              @RequestParam(name = "page",defaultValue = "0") int page){
@@ -46,12 +48,14 @@ import java.util.List;
             return "redirect:/user/index?page="+page+"&keyword="+keyword;
         }
         @GetMapping("/admin/formPatients")
+        @PreAuthorize("hasRole('ROLE_ADMIN')")
         public String formPatients(Model model){
             model.addAttribute("patient",new Patient());
             return "formPatients";
         }
 
         @PostMapping(path="/admin/save")
+        @PreAuthorize("hasRole('ROLE_ADMIN')")
         public String save(Model model, @Valid Patient patient, BindingResult bindingResult,
                            @RequestParam(defaultValue = "0")  int page,
                            @RequestParam(defaultValue = "") String keyword){
@@ -60,6 +64,7 @@ import java.util.List;
             return "redirect:/user/index?page="+page+"&keyword="+keyword;
         }
         @GetMapping("/admin/editPatient")
+        @PreAuthorize("hasRole('ROLE_ADMIN')")
         public String editPatient(Model model, Long id, int page, String keyword) {
             Patient patient = patientRepository.findById(id).orElse(null);
             if (patient == null) throw new RuntimeException("Patient introuvable.");
